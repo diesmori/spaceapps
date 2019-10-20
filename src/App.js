@@ -8,10 +8,24 @@ import { config } from "./components/Firebase/firebase";
 
 firebase.initializeApp(config);
 
+global.view = 1;
+
 function App() {
-  return (
-    <CreateBoard/>
-  );
+  if(global.view == 1){
+    return (
+      <CreateBoard/>
+    );
+  }
+  else if(global.view == 2){
+    return (
+      <CreateBoard/>
+    );
+  }
+  else if(global.view == 3){
+    return (
+      <CreateBoard/>
+    );
+  }
 }
 
 export default App;
