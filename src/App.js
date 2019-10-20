@@ -13,7 +13,7 @@ firebase.initializeApp(config);
 class App extends Component {
   constructor() {
     super();
-    this.state = { view: 3, isLogged: true, mail: "" };
+    this.state = { view: 1, isLogged: true, mail: "" };
 
     this.toggleView = this.toggleView.bind(this);
   }

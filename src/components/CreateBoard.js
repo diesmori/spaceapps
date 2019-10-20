@@ -33,7 +33,11 @@ class CreateBoard extends Component {
         jugadores: 0,
         hasPlayers: false,
         readyToStart:false
+        goToPlanet: false
       });
+      firebase.database().ref('Estrellas/' + "testing").update({
+          tipo:0
+        });
       this.listenToPlayers();
 
 
