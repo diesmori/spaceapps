@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+//import {createBoard} from "../styles/createBoard";
 import * as firebase from "firebase";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 var QRCode = require('qrcode.react');
+
+
 
 
 class CreateBoard extends Component {
@@ -16,6 +19,7 @@ class CreateBoard extends Component {
     };
     this.makeid = this.makeid.bind(this);
     this.createNewBoard = this.createNewBoard.bind(this);
+    this.listenToPlayers = this.listenToPlayers.bind(this);
 
   }
 
@@ -26,8 +30,11 @@ class CreateBoard extends Component {
 
     firebase.database().ref('Tableros/' + this.state.boardId).update({
         timestamp: Date.now(),
-        jugadores: 0
+        jugadores: 0,
+        hasPlayers: false,
+        readyToStart:false
       });
+      this.listenToPlayers();
 
 
   }
@@ -43,6 +50,14 @@ class CreateBoard extends Component {
    this.setState({boardId: "testing"});
 }
 
+  listenToPlayers(){
+    var that = this;
+    firebase.database().ref('Tableros/' + this.state.boardId).on("value", function(snapshot) {
+      if(snapshot.val().hasPlayers) that.props.toggleView(2);
+    }, function (errorObject) {
+    });
+  }
+
 
 
 
@@ -52,19 +67,32 @@ class CreateBoard extends Component {
   }
 
   render() {
+    let imgUrl = 'vista1.jpg';
 
         return (
-          <div>
-          <div>
-             Crea tu propio sistema solar con System cookin'!
+          <div style = {{ backgroundImage: 'url(' + imgUrl + ')',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+                height: "100vh"
+              }}>
 
-          </div>
-          <div>
-             <QRCode value={this.state.boardId} />
-          </div>
-          <div>
-             {this.state.boardId}
-          </div>
+                <div>
+                  <QRCode value={this.state.boardId} style={{position:"absolute",
+    width: "30vh",
+    right: "20vw",
+    height: "30vh",
+    top: "50vh"}} />
+                </div>
+                <div style={{position:"absolute",
+  width: "30vh",
+  right: "20vw",
+  height: "30vh",
+  top: "85vh",
+fontSize: "5vh"}}>
+                  {this.state.boardId}
+                </div>
+
           </div>
         );
 

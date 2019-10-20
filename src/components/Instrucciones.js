@@ -25,9 +25,9 @@ class Instrucciones extends Component {
     //Lo crea en firebase
 
     firebase.database().ref('Tableros/' + this.state.boardId).update({
-        timestamp: Date.now(),
-        jugadores: 0
+        timestamp: Date.now()
       });
+      this.listenToPlayers();
 
 
   }
@@ -43,6 +43,16 @@ class Instrucciones extends Component {
    this.setState({boardId: "testing"});
 }
 
+listenToPlayers(){
+  var that = this;
+  firebase.database().ref('Tableros/' + this.state.boardId).on("value", function(snapshot) {
+    console.log(snapshot.val().readyToStart);
+    if(snapshot.val().readyToStart) that.props.toggleView(3);
+  }, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+  });
+}
+
 
 
 
@@ -52,19 +62,32 @@ class Instrucciones extends Component {
   }
 
   render() {
+    let imgUrl = 'vista2.jpg';
 
         return (
-          <div>
-          <div>
-             Crea tu propio sistema solar con System cookin'!
+          <div style = {{ backgroundImage: 'url(' + imgUrl + ')',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+                height: "100vh"
+              }}>
 
-          </div>
-          <div>
-             <QRCode value={this.state.boardId} />
-          </div>
-          <div>
-             {this.state.boardId}
-          </div>
+                <div>
+                  <QRCode value={this.state.boardId} style={{position:"absolute",
+    width: "30vh",
+    right: "10vw",
+    height: "30vh",
+    top: "8vh"}} />
+                </div>
+                <div style={{position:"absolute",
+  width: "30vh",
+  right: "10vw",
+  height: "30vh",
+  top: "40vh",
+fontSize: "5vh"}}>
+                  {this.state.boardId}
+                </div>
+
           </div>
         );
 

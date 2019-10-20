@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-var QRCode = require('qrcode.react');
 
 
 class Sistema extends Component {
@@ -16,6 +15,7 @@ class Sistema extends Component {
       glosa:""
     };
     //this.makeid = this.makeid.bind(this);
+  }
 mostrarEstrella(tipoEstrella){
   if (tipoEstrella==1){
     this.setState({tipoEstrella:"estrellaRoja.png"})
@@ -49,9 +49,26 @@ mostrarPlaneta(tipoOrbita,nombrePlaneta){
   }
 
   render() {
+    let imgUrl = 'fondoEstelar.jpg';
+    let polvoEstelar = 'polvoEstelar.png';
 
         return (
-          <div>
+          <div style = {{ backgroundImage: 'url(' + imgUrl + ')',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+                height: "100vh"
+              }}>
+
+              <img src={polvoEstelar} style = {{
+                position:"absolute",
+  width: "30vh",
+  right: "40vw",
+  height: "30vh",
+  top: "40vh",
+                  }} />
+
+
 
           </div>
         );
