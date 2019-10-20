@@ -15,13 +15,17 @@ class Sistema extends Component {
       glosa:""
     };
     //this.makeid = this.makeid.bind(this);
+    this.mostrarEstrella = this.mostrarEstrella.bind(this);
+    this.mostrarPlaneta = this.mostrarPlaneta.bind(this);
+    this.listenToStarTemperature = this.listenToStarTemperature.bind(this);
+    
   }
 mostrarEstrella(tipoEstrella){
   if (tipoEstrella==1){
     this.setState({tipoEstrella:"estrellaRoja.png"})
   }
   else if (tipoEstrella==2){
-    this.setState({tipoEstrella:"estrellaBlanca.png"})
+    this.setState({tipoEstrella:"estrellaAmarilla.png"})
   }
   else if (tipoEstrella==3){
     this.setState({tipoEstrella:"estrellaAzul.png"})
@@ -42,15 +46,25 @@ mostrarPlaneta(tipoOrbita,nombrePlaneta){
 }
 
 
+listenToStarTemperature(){
+  var that = this;
+  firebase.database().ref('Estrellas/' + "testing").on("value", function(snapshot) {
+    var tipoEstrella = snapshot.val().tipo;
+    console.log(tipoEstrella);
+    that.mostrarEstrella(tipoEstrella);
+  }, function (errorObject) {
+  });
+}
+
+
 
 
   componentDidMount() {
-
+    this.listenToStarTemperature();
   }
 
   render() {
     let imgUrl = 'fondoEstelar.jpg';
-    let polvoEstelar = 'polvoEstelar.png';
 
         return (
           <div style = {{ backgroundImage: 'url(' + imgUrl + ')',
@@ -60,7 +74,7 @@ mostrarPlaneta(tipoOrbita,nombrePlaneta){
                 height: "100vh"
               }}>
 
-              <img src={polvoEstelar} style = {{
+              <img src={this.state.tipoEstrella} style = {{
                 position:"absolute",
   width: "30vh",
   right: "40vw",
